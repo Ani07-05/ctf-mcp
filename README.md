@@ -25,7 +25,7 @@ This MCP server integrates powerful security tools into your AI workflow, making
 
 ## Prerequisites
 
-- Python 3.8 or higher
+- Python 3.10 or higher (required by the `mcp` SDK)
 - An MCP-compatible AI client (Claude Desktop, Cline, etc.)
 
 ## Installation
@@ -34,9 +34,11 @@ This MCP server integrates powerful security tools into your AI workflow, making
 
 ```bash
 # Clone or download this repository
-cd security-mcp-server
+cd ctf-mcp
 
-# Install dependencies
+# Install dependencies (either way works)
+pip install -r requirements.txt
+# or
 pip install mcp requests
 ```
 
@@ -79,6 +81,8 @@ Add to Cline MCP Settings:
 ### Step 3: Restart Your AI Client
 
 Restart Claude Desktop or reload VS Code to load the MCP server.
+
+> **Windows tip**: in your client config, point `command` to the full path of the Python executable that has the dependencies installed (for example `D:\\Python\\Python313\\python.exe`). Wrapper scripts such as `.bat` files or shell aliases may not work with some MCP clients.
 
 ## Usage Examples
 
@@ -189,7 +193,7 @@ Do NOT use this tool for:
 2. Check that the absolute path to `server.py` is correct
 3. Ensure all dependencies are installed: `pip install mcp requests`
 4. Review the AI client logs for error messages
-5. Confirm you're using Python 3.8 or higher
+5. Confirm you're using Python 3.10 or higher
 
 ### Tool Not Responding
 1. Restart your AI client after making configuration changes
@@ -206,11 +210,11 @@ Do NOT use this tool for:
 ## Technical Details
 
 ### Dependencies
-- `mcp` - Model Context Protocol framework
+- `mcp` - Model Context Protocol framework (supports both v1.x FastMCP and v2.x MCPServer)
 - `requests` - HTTP library for CVE lookups
 
 ### Architecture
-The server uses FastMCP to expose security tools as callable functions through the MCP protocol. Each tool is implemented as a decorated function that returns JSON-formatted results.
+The server uses the `mcp` SDK (`FastMCP` in v1.x, renamed `MCPServer` in v2.x — both are supported) to expose security tools as callable functions through the MCP protocol. Each tool is implemented as a decorated function that returns JSON-formatted results, and the server runs over the stdio transport.
 
 ## Why Use MCP for Security Tools?
 
